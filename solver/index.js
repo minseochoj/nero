@@ -291,7 +291,7 @@ async function refunds() {
 let nodeCache = { at: 0, v: null }
 async function nodeInfo() {
   if (nodeCache.v && Date.now() - nodeCache.at < 15_000) return nodeCache.v
-  const j = await (await fetch(`${DAEMON}/get_info`, { signal: AbortSignal.timeout(6000) })).json()
+  const j = await (await fetch(`${DAEMON}/get_info`, { signal: AbortSignal.timeout(10_000) })).json()
   // the wallet can be busy refreshing; its height is a nice-to-have here, never worth holding the node status for
   const walletHeight = await Promise.race([wallet.height(), new Promise((r) => setTimeout(() => r(null), 2000))]).catch(() => null)
   const v = {
