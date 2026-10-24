@@ -35,8 +35,12 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: site/package-lock.json
+          cache-dependency-path: |
+            site/package-lock.json
+            solver/package-lock.json
       - run: npm ci
+      # some site tests load the solver's own code, to prove both sides seal and parse orders the same way
+      - run: npm ci --prefix ../solver
       - run: npx tsc --noEmit -p .
       - run: npm test
       - run: npm run build
