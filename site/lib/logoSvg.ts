@@ -1,0 +1,2 @@
+// The full mark on the dark background (same geometry as components/NeroMark.tsx), for share cards.
+export const LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="23.3 16.7 60 60"><rect x="23.3" y="16.7" width="60" height="60" fill="#09090a"/><path d="M26.58 31.25 A30 30 0 1 1 68.75 73.42 A30 30 0 0 0 26.58 31.25 Z" fill="#ff6600"/></svg>`

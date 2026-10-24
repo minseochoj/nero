@@ -1,0 +1,23 @@
+{
+  "name": "nero-solver",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Nero solver: pays real XMR from its own Monero wallet for SOL sent with a sealed order, or refunds it.",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node --test test/*.test.js",
+    "keys": "node scripts/new-keys.mjs"
+  },
+  "dependencies": {
+    "@noble/curves": "^1.9.0",
+    "@noble/hashes": "^1.8.0",
+    "@solana/web3.js": "^1.98.2",
+    "bs58": "^6.0.0",
+    "tweetnacl": "^1.0.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

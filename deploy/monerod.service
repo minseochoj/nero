@@ -1,0 +1,13 @@
+[Unit]
+Description=Monero node
+After=network-online.target
+
+[Service]
+# Official monerod, pruned, RPC restricted and on 127.0.0.1 only
+ExecStart=/opt/monero/current/monerod --data-dir /opt/monero/data --prune-blockchain --sync-pruned-blocks --rpc-bind-ip 127.0.0.1 --rpc-bind-port 18081 --restricted-rpc --no-igd --db-sync-mode safe:sync --non-interactive
+Restart=always
+RestartSec=10
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,36 @@
+{
+  "name": "nero-site",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 8811",
+    "build": "next build",
+    "start": "next start",
+    "test": "tsx --test test/*.test.mts",
+    "drift": "tsx scripts/api-drift.mts",
+    "check": "tsc --noEmit -p . && npm test && npm --prefix ../solver test"
+  },
+  "dependencies": {
+    "@noble/curves": "^1.9.0",
+    "@noble/hashes": "^1.8.0",
+    "@solana/spl-token": "^0.4.13",
+    "@solana/wallet-adapter-base": "^0.9.27",
+    "@solana/wallet-adapter-react": "^0.15.39",
+    "@solana/web3.js": "^1.98.2",
+    "bs58": "^6.0.0",
+    "next": "^15.5.25",
+    "qrcode": "^1.5.4",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "tweetnacl": "^1.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "@types/qrcode": "^1.5.5",
+    "@types/react": "^19",
+    "@types/react-dom": "^19.3.0",
+    "tsx": "^4.23.15",
+    "typescript": "^5.6.0"
+  },
+  "license": "MIT"
+}

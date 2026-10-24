@@ -1,0 +1,44 @@
+# Nero
+
+> Nero turns any Solana token into real Monero (XMR) at your own Monero address, in one signature. Its private exit is paid by Nero's own solver from its own Monero wallet, through Nero's own Monero node, so the Monero address never appears on Solana. The site and the solver are open source.
+
+## Live
+- Private exit: any Solana token (SOL, stablecoins, pump.fun coins) to real XMR. One transaction: a swap into SOL, a transfer to the solver, and a memo carrying the Monero address sealed in the browser (X25519, NaCl box). The solver pays XMR after the deposit is final, or refunds the SOL. Fee 0.6%, built into the quote. https://www.neroswap.app/swap
+- Private exit without a wallet connection: a one-time Solana deposit address per order; send SOL from any wallet or exchange; a Solana refund address is required. Quote locked for 15 minutes. Fee 0.9%.
+- Signed promise: every private order comes with a text signed by the deposit wallet's ed25519 key (amounts, deadline, refund address, a hash of the sealed address). The browser checks it before the user signs anything.
+- Standard exit: any Solana token to XMR through the wXMR bridge (wxmr.io) in one transaction. Fee 0.3% plus the bridge's 0.1%. Minimum 0.1 XMR. The Monero address is visible on Solana on this route.
+- Enter: XMR to wXMR on Solana through the same bridge.
+
+## Verify
+- Verify page (code commit, pinned keys, our node against a public node, promise checker): https://www.neroswap.app/verify
+- Our Monero node vs a public node (JSON): https://www.neroswap.app/api/node
+- Solver info, including the commit it runs (JSON): https://www.neroswap.app/api/v2/info
+- Source code: https://github.com/minseochoj/nero
+
+## Numbers
+- Live totals (JSON): https://www.neroswap.app/api/stats
+
+## Addresses
+- Solver deposit wallet: 5GDP6viv4mK1XE2RBtdLoz3ct65YFjq6yfFoqXBi7bbk
+- Sealing key (X25519, base64): l0meX+p6q/5U+TC5qoqbTZLttsYxSrqy8EPjXZGyhTA=
+- wXMR mint: WXMRyRZhsa19ety5erZhHg4N3xj3EVN92u94422teJp
+
+## Not claimed
+- Nero is not trustless. The private exit is custodial for the seconds between deposit and payout: you trust Nero's solver to pay or refund. Order size and daily volume are capped.
+- The Solana side of every exit is public: that a wallet sent funds to Nero, and how much. What happens after the XMR lands is private, because Monero is private by default.
+- The solver's reserve is published as a number, not a Monero reserve proof, because a reserve proof would reveal key images and mark payouts on the Monero chain.
+- The standard exit depends on the wXMR bridge, which has a single operator. Nero does not run it.
+- No audit has been completed. Nero never messages first and never asks for keys.
+
+## Planned
+- A dedicated, locked-down server for the solver, its wallets and the Monero node.
+- A refund program on Solana, so a private-exit refund no longer depends on the solver.
+- Exits from other chains (built, switched off).
+- Higher private-exit limits as the solver's XMR reserve grows.
+
+## Documents
+- Paper: https://www.neroswap.app/docs
+- For integrators (link format for a prefilled exit, public read endpoints with examples): https://www.neroswap.app/docs/api
+- What is public, route by route: https://www.neroswap.app/what-is-public
+- Help: https://www.neroswap.app/help
+- Guides: https://www.neroswap.app/guides (SOL to XMR, USDC to XMR, USDT to XMR, pump.fun coin to XMR, exchange withdrawal to XMR with no wallet, checking a Monero payment proof)

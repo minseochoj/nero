@@ -1,0 +1,12 @@
+[Unit]
+Description=Nero solver wallet RPC
+After=network-online.target monerod.service
+
+[Service]
+# The solver's Monero wallet. It talks to our own node only, and listens on 127.0.0.1 only.
+ExecStart=/opt/monero/current/monero-wallet-rpc --wallet-dir /opt/nero/wallets --rpc-bind-ip 127.0.0.1 --rpc-bind-port 18093 --disable-rpc-login --daemon-address 127.0.0.1:18081 --trusted-daemon --non-interactive --log-file /opt/nero/wallet-rpc.log
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,12 @@
+# The solver's public face: only /v2/* is passed through, and the admin path never is.
+api.example.com {
+  handle /v2/admin* {
+    respond 404
+  }
+  handle /v2/* {
+    reverse_proxy 127.0.0.1:3197
+  }
+  handle {
+    respond 404
+  }
+}
