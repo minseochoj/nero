@@ -1,0 +1,42 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  solver:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: solver
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: solver/package-lock.json
+      - run: npm ci
+      - run: npm test
+
+  site:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - run: npm ci
+      - run: npx tsc --noEmit -p .
+      - run: npm test
+      - run: npm run build

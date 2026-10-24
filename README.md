@@ -2,6 +2,8 @@
 
 <h1 align="center">Nero</h1>
 
+<p align="center"><a href="https://github.com/minseochoj/nero/actions/workflows/test.yml"><img src="https://github.com/minseochoj/nero/actions/workflows/test.yml/badge.svg" alt="tests"></a></p>
+
 <p align="center"><b>Solana in. Monero out.</b><br>Any Solana token into real XMR at your own Monero address, paid from our own Monero node.<br>Your Monero address never appears on Solana.</p>
 
 ---
@@ -87,7 +89,7 @@ What cannot be proven from the outside:
 
 The fastest way is the **Verify page** (`/verify`) on the live site. It reads everything from your browser and checks it there. To do the same by hand:
 
-**1. Read and test the code.**
+**1. Read and test the code.** The same tests run on every commit in [GitHub Actions](https://github.com/minseochoj/nero/actions).
 
 ```bash
 git clone https://github.com/minseochoj/nero && cd nero
