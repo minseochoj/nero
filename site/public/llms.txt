@@ -13,7 +13,7 @@
 - Verify page (code commit, pinned keys, our node against a public node, promise checker): https://www.neroswap.app/verify
 - Our Monero node vs a public node (JSON): https://www.neroswap.app/api/node
 - Solver info, including the commit it runs (JSON): https://www.neroswap.app/api/v2/info
-- Source code: https://github.com/minseochoj/nero
+- Source code: https://github.com/neroswap/nero
 
 ## Numbers
 - Live totals (JSON): https://www.neroswap.app/api/stats

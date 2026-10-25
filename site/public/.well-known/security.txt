@@ -1,5 +1,5 @@
-Contact: https://github.com/minseochoj/nero/security/advisories/new
-Policy: https://github.com/minseochoj/nero/blob/main/SECURITY.md
+Contact: https://github.com/neroswap/nero/security/advisories/new
+Policy: https://github.com/neroswap/nero/blob/main/SECURITY.md
 Preferred-Languages: en
 Canonical: https://www.neroswap.app/.well-known/security.txt
 Expires: 2027-10-25T00:00:00.000Z
