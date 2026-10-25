@@ -6,7 +6,7 @@ import nacl from 'tweetnacl'
 import bs58 from 'bs58'
 import { BRAND } from '@/lib/brand'
 import { SOLVER_BOX_PUB, SOLVER_DEPOSIT } from '@/lib/v2'
-import { ago } from '@/lib/format'
+import { ago, xmr } from '@/lib/format'
 
 /*
   Everything on this page is read from your browser, from the same public endpoints the app uses, and checked here:
@@ -16,6 +16,7 @@ import { ago } from '@/lib/format'
 
 type Info = { version: string; enabled: boolean; deposit: string; boxPub: string } | null
 type Node = { ours: { height: number; targetHeight: number; synchronized: boolean; topBlockHash: string; walletHeight: number | null; at: number } | null; reference: { node: string; height: number; hashAtOurTop: string; match: boolean } | null } | null
+type Stats = { exits: number; xmrPico: string; refunds: number; reservePico: string | null; lastPaidAt: number | null } | null
 
 const pinnedBox = btoa(String.fromCharCode(...SOLVER_BOX_PUB))
 const short = (s: string, n = 10) => (s.length > n * 2 + 1 ? `${s.slice(0, n)}…${s.slice(-n)}` : s)
@@ -29,17 +30,20 @@ function Mark({ ok }: { ok: boolean | null }) {
 export default function Verify() {
   const [info, setInfo] = useState<Info | undefined>(undefined)
   const [node, setNode] = useState<Node | undefined>(undefined)
+  const [stats, setStats] = useState<Stats | undefined>(undefined)
 
   useEffect(() => {
     let dead = false
     const load = async () => {
-      const [i, n] = await Promise.allSettled([
+      const [i, n, s] = await Promise.allSettled([
         fetch('/api/v2/info', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)),
         fetch('/api/node', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)),
+        fetch('/api/v2/stats', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)),
       ])
       if (dead) return
       setInfo(i.status === 'fulfilled' ? i.value : null)
       setNode(n.status === 'fulfilled' ? n.value : null)
+      setStats(s.status === 'fulfilled' ? s.value : null)
     }
     load()
     const t = setInterval(load, 30_000)
@@ -87,6 +91,16 @@ export default function Verify() {
           <div><dt>The wallet</dt><dd>{o?.walletHeight ? <>The solver&apos;s Monero wallet has read up to block <span className="num">{o.walletHeight.toLocaleString('en-US')}</span>, through our node only. No outside node sees which transactions are ours.</> : '·'}</dd></div>
         </dl>
         <p className="faint" style={{ marginTop: 12, fontSize: 13.5 }}>The same data as JSON: <a className="link" href="/api/node">/api/node</a>. Compare the hash with any Monero block explorer.</p>
+      </section>
+
+      <section style={{ marginTop: 48 }}>
+        <h2 className="h-2" style={{ marginBottom: 14 }}>Track record</h2>
+        <dl className="ledger">
+          <div><dt>Paid</dt><dd>{stats === undefined ? 'Reading…' : !stats ? 'Not answering right now.' : <><span className="num">{stats.exits.toLocaleString('en-US')}</span> private {stats.exits === 1 ? 'exit' : 'exits'}, <span className="num">{xmr(stats.xmrPico, 4)} XMR</span> in all{stats.lastPaidAt ? <>, the last one {ago(stats.lastPaidAt)}</> : ''}.</>}</dd></div>
+          <div><dt>Refunded</dt><dd>{stats ? <><span className="num">{stats.refunds.toLocaleString('en-US')}</span> {stats.refunds === 1 ? 'order' : 'orders'} sent back as SOL, because they could not be paid as quoted.</> : '·'}</dd></div>
+          <div><dt>Reserve</dt><dd>{stats?.reservePico ? <><span className="num">{xmr(stats.reservePico, 3)} XMR</span> in the solver&apos;s wallet, as the solver reports it.</> : '·'}</dd></div>
+          <div><dt>Check it</dt><dd>Every one of these exits and refunds is a transaction to or from the <a className="link" href={`https://solscan.io/account/${SOLVER_DEPOSIT.toBase58()}`} target="_blank" rel="noreferrer">deposit wallet</a>, so the Solana side can be counted by anyone. Totals only: no exit is listed on its own.</dd></div>
+        </dl>
       </section>
 
       <PromiseCheck />
